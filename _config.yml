@@ -4,7 +4,9 @@ navbar:
   title: "Workshop"
   left:
     - text: "Home"
-      href: index.html
+      href: index.md
+    - text: "Morning"
+      href: morning.html
     - text: "Afternoon"
       href: afternoon.html
 output:
