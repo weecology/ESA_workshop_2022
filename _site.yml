@@ -1,0 +1,12 @@
+name: "ESA2022"
+output_dir: "docs"
+navbar:
+  title: "Workshop"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Afternoon"
+      href: afternoon.html
+output:
+  html_document:
+    theme: cosmo
