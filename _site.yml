@@ -9,4 +9,5 @@ navbar:
       href: afternoon.html
 output:
   html_document:
-    theme: cosmo
+    theme: jekyll-theme-midnight
+
