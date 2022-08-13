@@ -17,12 +17,14 @@ discuss some of the core metadata elements that we need to understand to work wi
 rasters in R, including CRS and resolution.
 
 **Objectives**
+
 -  Describe the fundamental attributes of a raster dataset.
 -  Explore raster attributes and metadata using R.
 -  Import rasters into R using the `raster` package.
 -  Plot a raster file in R using the `ggplot2` package.
 
 **Keypoints**
+
 - The GeoTIFF file format includes metadata about the raster data. 
 - To plot raster data with the `ggplot2` package, we need to convert it to a dataframe.
 - R stores CRS information in the Proj4 format.
@@ -142,7 +144,7 @@ lesson](https://datacarpentry.org/organization-geospatial/03-crs).
 Now we will see how features of the CRS appear in our data file and what
 meanings they have.
 
-# View Raster Coordinate Reference System (CRS) in R
+# View Raster Coordinate Reference System (CRS)
 We can view the CRS string associated with our R object using the`crs()`
 function.
 
@@ -152,7 +154,6 @@ function.
 crs(dsm)
 ```
 
-# Understanding CRS in Proj4 Format
 The CRS for our data is given to us by R in `proj4` format. Let's break down
 the pieces of `proj4` string. The string contains all of the individual CRS
 elements that R or another GIS might need. Each element is specified with a

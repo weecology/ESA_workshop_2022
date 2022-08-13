@@ -1,0 +1,144 @@
+---
+title: "Plot Raster Data"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+  theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+This episode covers how to plot a raster in R using the ggplot2 package with customized coloring schemes. It also covers how to layer a raster on top of a hillshade to produce an eloquent map. We will continue working with the Digital Surface Model (DSM) raster for the NEON Harvard Forest Field Site.
+
+**Objectives**
+
+- Build customized plots for a single band raster using the `ggplot2` package.
+- Layer a raster dataset on top of a hillshade to create an elegant basemap.
+
+**keypoints**
+
+- Continuous data ranges can be grouped into categories using `mutate()` and `cut()`.
+- Use built-in `terrain.colors()` or set your preferred color scheme manually.
+
+If you're just opening up this project, you'll have to load the packages and data used in previous episodes. 
+```{r prep-environment, echo = TRUE, results='hide', message = FALSE, warning = FALSE}
+
+# load packages 
+library(raster)
+library(rgdal)
+library(ggplot2)
+library(dplyr)
+
+
+# data loaded from earlier episode
+# DSM data for Harvard Forest
+dsm <- raster("data/raster/HARV_dsmCrop.tif")
+dsm_df <- as.data.frame(dsm, xy = TRUE)
+```
+
+# Break up continuous data
+In the previous episode, we viewed our data using a continuous color ramp. For 
+clarity and visibility of the plot, we may prefer to view the data "symbolized" or colored according to ranges of values. This is comparable to a "classified"
+map. To do this, we need to tell `ggplot` how many groups to break our data into, and
+where those breaks should be. To make these decisions, it is useful to first explore the distribution of the data using a bar plot. To begin with, we will use `dplyr`'s `mutate()` function combined with `cut()` to split the data into 3 bins.
+
+```{r histogram-breaks-ggplot}
+
+# add column of binned elevation to df using mutate
+# new column should break values into 3 bins using the cut function
+dsm_df <- dsm_df %>%
+                mutate(bin_elevation = cut(HARV_dsmCrop, breaks = 3))
+
+# plot binned elevation with a bar chart
+ggplot() +
+    geom_bar(data = dsm_df, aes(bin_elevation))
+```
+
+# Use custom break values
+We might prefer to customize the cutoff values for these groups.
+Lets round the cutoff values so that we have groups for the ranges of 
+301–350 m, 351–400 m, and 401–450 m.
+To implement this we will give `mutate()` a numeric vector of break points instead 
+of the number of breaks we want.
+
+```{r custom-bins}
+
+# create vector of bins values
+custom_bins <- c(300, 350, 400, 450)
+
+# use custom bins in cut function
+dsm_df <- dsm_df %>%
+  mutate(bin3_elevation = cut(HARV_dsmCrop, breaks = custom_bins))
+
+# look at bin values
+unique(dsm_df$bin3_elevation)
+```
+
+And now we can plot our bar plot again, using the new groups:
+
+```{r histogram-custom-breaks}
+
+# bar chart using custom bins
+ggplot() +
+  geom_bar(data = dsm_df, aes(bin3_elevation))
+```
+
+We can use those groups to plot our raster data, with each group being a different color:
+
+```{r raster-with-breaks}
+ggplot() +
+  geom_raster(data = dsm_df , aes(x = x, y = y, fill = bin3_elevation)) + 
+  coord_quickmap()
+```
+
+# Enhance plot with terrain colors 
+The plot above uses the default colors inside `ggplot` for raster objects. 
+We can specify our own colors to make the plot look a little nicer.
+R has a built in set of colors for plotting terrain, which are built in
+to the `terrain.colors()` function.
+Since we have three bins, we want to create a 3-color palette:
+
+```{r terrain-colors}
+
+# look at hex codes for colors
+terrain.colors(3)
+```
+
+The `terrain.colors()` function returns *hex colors* - 
+ each of these character strings represents a color.
+To use these in our map, we pass them across using the 
+ `scale_fill_manual()` function.
+
+```{r ggplot-breaks-customcolors}
+
+# plor binned elevation using terrain colors
+ggplot() +
+ geom_raster(data = dsm_df , aes(x = x, y = y,
+                                      fill = bin3_elevation)) + 
+    scale_fill_manual(values = terrain.colors(3)) + 
+    coord_quickmap()
+```
+
+We can continue to enhance this plot by adding more bins or classes of elevation data and adding other plot elements, such as a title and axis labels. Let's break up the elevation data into 6 classes and add some helpful plot elements.
+
+```{r enhance-plot}
+dsm_df <- dsm_df  %>%
+               mutate(bin6_elevation = cut(HARV_dsmCrop, breaks = 6)) 
+
+# plot
+ggplot() +
+    geom_raster(data = dsm_df , aes(x = x, y = y,
+                                      fill = bin6_elevation)) + 
+    scale_fill_manual(values = terrain.colors(6), name = "Elevation") + 
+    ggtitle("Classified Elevation Map - NEON Harvard Forest Field Site") +
+    xlab("UTM Easting Coordinate (m)") +
+    ylab("UTM Northing Coordinate (m)") + 
+    coord_quickmap()
+```
+
+
+
+The material has been adapted from The Carpentries [Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) lesson licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
