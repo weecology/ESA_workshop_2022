@@ -13,3 +13,5 @@ output:
   html_document:
     theme: jekyll-theme-midnight
 
+
+theme: jekyll-theme-slate
