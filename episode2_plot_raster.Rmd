@@ -35,8 +35,8 @@ library(dplyr)
 
 # data loaded from earlier episode
 # DSM data for Harvard Forest
-dsm <- raster("data/raster/HARV_dsmCrop.tif")
-dsm_df <- as.data.frame(dsm, xy = TRUE)
+dtm <- raster("data/raster/HARV_dtmCrop.tif")
+dtm_df <- as.data.frame(dtm, xy = TRUE)
 ```
 
 # Break up continuous data
@@ -49,12 +49,12 @@ where those breaks should be. To make these decisions, it is useful to first exp
 
 # add column of binned elevation to df using mutate
 # new column should break values into 3 bins using the cut function
-dsm_df <- dsm_df %>%
-                mutate(bin_elevation = cut(HARV_dsmCrop, breaks = 3))
+dtm_df <- dtm_df %>%
+                mutate(bin_elevation = cut(HARV_dtmCrop, breaks = 3))
 
 # plot binned elevation with a bar chart
 ggplot() +
-    geom_bar(data = dsm_df, aes(bin_elevation))
+    geom_bar(data = dtm_df, aes(bin_elevation))
 ```
 
 # Use custom break values
@@ -67,14 +67,14 @@ of the number of breaks we want.
 ```{r custom-bins}
 
 # create vector of bins values
-custom_bins <- c(300, 350, 400, 450)
+custom_bins <- c(300, 325, 350, 375,400)
 
 # use custom bins in cut function
-dsm_df <- dsm_df %>%
-  mutate(bin3_elevation = cut(HARV_dsmCrop, breaks = custom_bins))
+dtm_df <- dtm_df %>%
+  mutate(bin3_elevation = cut(HARV_dtmCrop, breaks = custom_bins))
 
 # look at bin values
-unique(dsm_df$bin3_elevation)
+unique(dtm_df$bin3_elevation)
 ```
 
 And now we can plot our bar plot again, using the new groups:
@@ -83,14 +83,14 @@ And now we can plot our bar plot again, using the new groups:
 
 # bar chart using custom bins
 ggplot() +
-  geom_bar(data = dsm_df, aes(bin3_elevation))
+  geom_bar(data = dtm_df, aes(bin3_elevation))
 ```
 
 We can use those groups to plot our raster data, with each group being a different color:
 
 ```{r raster-with-breaks}
 ggplot() +
-  geom_raster(data = dsm_df , aes(x = x, y = y, fill = bin3_elevation)) + 
+  geom_raster(data = dtm_df , aes(x = x, y = y, fill = bin3_elevation)) + 
   coord_quickmap()
 ```
 
@@ -116,7 +116,7 @@ To use these in our map, we pass them across using the
 
 # plor binned elevation using terrain colors
 ggplot() +
- geom_raster(data = dsm_df , aes(x = x, y = y,
+ geom_raster(data = dtm_df , aes(x = x, y = y,
                                       fill = bin3_elevation)) + 
     scale_fill_manual(values = terrain.colors(3)) + 
     coord_quickmap()
@@ -125,12 +125,12 @@ ggplot() +
 We can continue to enhance this plot by adding more bins or classes of elevation data and adding other plot elements, such as a title and axis labels. Let's break up the elevation data into 6 classes and add some helpful plot elements.
 
 ```{r enhance-plot}
-dsm_df <- dsm_df  %>%
-               mutate(bin6_elevation = cut(HARV_dsmCrop, breaks = 6)) 
+dtm_df <- dtm_df  %>%
+               mutate(bin6_elevation = cut(HARV_dtmCrop, breaks = 6)) 
 
 # plot
 ggplot() +
-    geom_raster(data = dsm_df , aes(x = x, y = y,
+    geom_raster(data = dtm_df , aes(x = x, y = y,
                                       fill = bin6_elevation)) + 
     scale_fill_manual(values = terrain.colors(6), name = "Elevation") + 
     ggtitle("Classified Elevation Map - NEON Harvard Forest Field Site") +

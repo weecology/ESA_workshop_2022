@@ -53,7 +53,7 @@ your data.
 ```{r view-attributes-gdal}
 
 # read raster information from file
-GDALinfo("data/raster/HARV_dsmCrop.tif")
+GDALinfo("data/raster/HARV_dtmCrop.tif")
 ```
 
 Some key information to note about this file is the:
@@ -71,23 +71,23 @@ function to open a raster in R.
 
 First we will load our raster file into R and view the data structure.
 
-```{r load-dsm}
+```{r load-dtm}
 
 # load raster into environment
-dsm <- raster("data/raster/HARV_dsmCrop.tif")
+dtm <- raster("data/raster/HARV_dtmCrop.tif")
 
 # view raster information
-dsm
+dtm
 
 # summary of values
-summary(dsm)
+summary(dtm)
 
 # number of layers
-nlayers(dsm)
+nlayers(dtm)
 
 # min and max values
-maxValue(dsm)
-minValue(dsm)
+maxValue(dtm)
+minValue(dtm)
 ```
 
 
@@ -100,10 +100,10 @@ dataframe format.
 ```{r dataframe}
 
 # convert raster to data frame for plotting
-dsm_df <- as.data.frame(dsm, xy = TRUE)
+dtm_df <- as.data.frame(dtm, xy = TRUE)
 
 # view the structure of the raster data frame
-str(dsm_df)
+str(dtm_df)
 ```
 
 Note the column names of the data frame. There are two columns that specify the x and y coordinates and one column with the pixel values, with a column name that matches the name of the GeoTiff file. Knowing this column name is important because we will specify it in the `ggplot()` code.
@@ -118,7 +118,7 @@ which is a color-blindness friendly color scale. We will also use the `coord_qui
 # plot raster using ggplot
 # viridis colorscale and mercator projection
 ggplot() +
-    geom_raster(data = dsm_df , aes(x = x, y = y, fill = HARV_dsmCrop)) +
+    geom_raster(data = dtm_df , aes(x = x, y = y, fill = HARV_dtmCrop)) +
     scale_fill_viridis_c() +
     coord_quickmap()
 ```
@@ -130,7 +130,7 @@ See `?plot` for more arguments to customize the plot
 ```{r base-plot}
 
 # use base R to plot raster
-plot(dsm)
+plot(dtm)
 ```
 
 This map shows the elevation of our study site in Harvard Forest. From the
@@ -151,7 +151,7 @@ function.
 ```{r view-resolution-units}
 
 # view raster crs
-crs(dsm)
+crs(dtm)
 ```
 
 The CRS for our data is given to us by R in `proj4` format. Let's break down
@@ -181,7 +181,7 @@ useful in identifying outliers and bad data values in our raster data.
 
 # plot histogram of dsm df
 ggplot() +
-    geom_histogram(data = dsm_df, aes(HARV_dsmCrop))
+    geom_histogram(data = dtm_df, aes(HARV_dtmCrop))
 ```
 
 The material has been adapted from The Carpentries [Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) lesson licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)

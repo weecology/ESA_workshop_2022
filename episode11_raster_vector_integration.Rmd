@@ -1,0 +1,68 @@
+---
+title: "Raster and vetor integration"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+  theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+
+This episode explains how to crop a raster using the extent of a vector
+shapefile. We will also cover how to extract values from a raster that occur
+within a set of polygons, or in a buffer (surrounding) region around a set of
+points.
+
+
+**Objectives**
+
+- Crop a raster to the extent of a vector layer.
+- Extract values from a raster that correspond to a vector file overlay.
+
+**Keypoints**
+
+- Use the `crop()` function to crop a raster object.
+- Use the `extract()` function to extract pixels from a raster object that fall within a particular extent boundary.
+- Use the `extent()` function to define an extent.
+
+If you're just opening up this project, you'll have to load the packages and data used in previous episodes. 
+```{r prep-environment, echo = TRUE, results='hide', message = FALSE, warning = FALSE}
+
+# load packages 
+library(raster)
+library(rgdal)
+library(ggplot2)
+library(dplyr)
+library(sf)
+
+
+# data loaded from earlier episode
+# DSM data for Harvard Forest
+dsm <- raster("data/raster/HARV_dsmCrop.tif")
+dsm_df <- as.data.frame(dsm, xy = TRUE)
+
+tower <- st_read("data/vector/HARVtower_UTM18N.shp")
+roads <- st_read("data/vector/HARV_roads.shp")
+aoi_boundary <- st_read("data/vector/HarClip_UTMZ18.shp")
+```
+
+# Canopy height model
+
+
+# Plot raster and vector data
+
+We often work with spatial layers that have different spatial extents. The
+spatial extent of a shapefile or R spatial object represents the geographic
+"edge" or location that is the furthest north, south east and west. Thus is
+represents the overall geographic coverage of the spatial object.
+
+Let's start by plotting the full extent of the CHM data and overlay where the AOI falls within it. The boundaries of the AOI will be colored blue, and we use `fill = NA` to make the area transparent.
+
+
+
+
+The material has been adapted from The Carpentries [Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) lesson licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
