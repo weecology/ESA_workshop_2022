@@ -1,0 +1,188 @@
+---
+title: "Explore and plot by vector layer attributes"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+  theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+
+This episode continues our discussion of vector layer attributes and 
+covers how to work with vector layer attributes in R. It covers how
+to identify and query layer attributes, as well as how to subset features by specific attribute values. Finally, we will learn how to plot a feature according to a set of attribute values.
+
+
+**Objectives**
+
+- Query attributes of a spatial object.
+- Subset spatial objects using specific attribute values.
+- Plot a vector feature, colored by unique attribute values.
+
+**Keypoints**
+
+- Spatial objects in `sf` are similar to standard data frames and can be manipulated using the same functions.
+- Almost any feature of a plot can be customized using the various functions and options in the `ggplot2` package.
+
+If you're just opening up this project, you'll have to load the packages and data used in previous episodes. 
+```{r prep-environment, echo = TRUE, results='hide', message = FALSE, warning = FALSE}
+
+# load packages 
+library(raster)
+library(rgdal)
+library(ggplot2)
+library(dplyr)
+library(sf)
+
+
+# data loaded from earlier episode
+# DSM data for Harvard Forest
+dsm <- raster("data/raster/HARV_dsmCrop.tif")
+dsm_df <- as.data.frame(dsm, xy = TRUE)
+
+tower <- st_read("data/vector/HARVtower_UTM18N.shp")
+roads <- st_read("data/vector/HARV_roads.shp")
+aoi_boundary <- st_read("data/vector/HarClip_UTMZ18.shp")
+```
+
+
+We started to explore our `point_HARV` object in the previous episode.
+To see a summary of all of the metadata associated with our `point_HARV` object, we can view the object with `View(point_HARV)` or print a summary of the object itself to the console.
+
+```{r view-object}
+
+# look at point object
+tower
+
+```
+
+We can use the `ncol` function to count the number of attributes associated with a spatial object too. Note that the geometry is just another column and counts towards the total.
+
+We can also view the individual name of each attribute using the
+`names()` function.
+
+We could also view just the first 6 rows
+of attribute values using the `head()` function to get a preview of the data:
+
+
+```{r shapefile-attributes}
+
+# look at number and names of attributes in line object
+ncol(roads)
+names(roads)
+head(roads)
+
+```
+
+# Explore Values within One Attribute
+We can explore individual values stored within a particular attribute.
+Comparing attributes to a spreadsheet or a data frame, this is similar
+to exploring values in a column. We did this with the `gapminder` dataframe in [an earlier lesson](https://datacarpentry.org/r-intro-geospatial/05-data-subsetting/index.html). For spatial objects, we can use the same syntax: `objectName$attributeName`.
+
+We can see the contents of the `TYPE` field of our lines feature:
+
+```{r explore-attribute-values }
+
+# view all records of single attribute
+roads$TYPE
+
+unique(roads$TYPE)
+
+```
+
+# Subset Features
+We can use the `filter()` function from `dplyr` that we worked with in [an earlier lesson](https://datacarpentry.org/r-intro-geospatial/06-dplyr) to select a subset of features from a spatial object in R, just like with data frames.
+
+For example, we might be interested only in features that are of `TYPE` "footpath". Once we subset out this data, we can use it as input to other code so that code only operates on the footpath lines.
+
+```{r subsetting-shapefiles}
+
+footpath <- roads %>% 
+  filter(TYPE == "footpath")
+
+```
+
+Our subsetting operation reduces the `features` count to 2. This means
+that only two feature lines in our spatial object have the attribute
+`TYPE == footpath`. We can plot only the footpath lines:
+
+```{r plot-subset-shapefile}
+
+# plot footpaths
+# add title and subtitle
+ggplot() + 
+  geom_sf(data = footpath) +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Footpaths") + 
+  coord_sf()
+```
+
+There are two features in our footpaths subset. Why does the plot look like
+there is only one feature? Let's adjust the colors used in our plot. If we have
+2 features in our vector object, we can plot each using a unique color by
+assigning a column name to the color aesthetic (`color =`). We use the syntax
+`aes(color = )` to do this. We can also alter the default line thickness by
+using the `size =` parameter, as the default value of 0.5 can be hard to see.
+Note that size is placed outside of the `aes()` function, as we are not
+connecting line thickness to a data variable.
+
+```{r plot-subset-shapefile-unique-colors"}
+
+# color footpaths by object ID
+ggplot() + 
+  geom_sf(data = footpath, aes(color = factor(OBJECTID)), size = 1.5) +
+  labs(color = 'Footpath ID') +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Footpaths") + 
+  coord_sf()
+```
+
+# Customize Plots
+
+In the examples above, `ggplot()` automatically selected colors for
+each line based on a default color order. If we don't like those
+default colors, we can create a vector of colors - one for each
+feature. To create this vector we can use the following syntax:
+
+`c("color_one", "color_two", "color_three")[object$factor]`
+
+Note in the above example we have
+
+1. a vector of colors - one for each factor value (unique attribute value)
+2. the attribute itself (`[object$factor]`) of class factor.
+
+First we will check how many unique levels our factor has:
+
+```{r palette-and-plot}
+
+# check number of unique types
+unique(roads$TYPE)
+
+```
+
+Then we can create a palette of four colors, one for each
+feature in our vector object.
+
+```{r}
+
+# set unique color vector
+road_colors <- c("blue", "green", "navy", "purple")
+
+```
+
+We can tell `ggplot` to use these colors when we plot the data.
+
+```{r harv-paths-map}
+
+# plot road types using custom colors
+ggplot() +
+  geom_sf(data = roads, aes(color = TYPE)) + 
+  scale_color_manual(values = road_colors) +
+  labs(color = 'Road Type') +
+  ggtitle("NEON Harvard Forest Field Site", subtitle = "Roads & Trails") + 
+  coord_sf()
+```
+
+The material has been adapted from The Carpentries [Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) lesson licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
