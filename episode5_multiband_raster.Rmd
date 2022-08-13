@@ -32,11 +32,6 @@ library(rgdal)
 library(ggplot2)
 library(dplyr)
 
-
-# data loaded from earlier episode
-# DSM data for Harvard Forest
-dsm <- raster("data/raster/HARV_dsmCrop.tif")
-dsm_df <- as.data.frame(dsm, xy = TRUE)
 ```
 
 # Getting Started with Multi-Band Data
