@@ -1,0 +1,187 @@
+---
+title: "Introduction to raster data"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+  theme: united
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+In this episode, we will introduce the fundamental principles, packages and
+metadata/raster attributes that are needed to work with raster data in R. We will
+discuss some of the core metadata elements that we need to understand to work with
+rasters in R, including CRS and resolution.
+
+**Objectives**
+
+-  Describe the fundamental attributes of a raster dataset.
+-  Explore raster attributes and metadata using R.
+-  Import rasters into R using the `raster` package.
+-  Plot a raster file in R using the `ggplot2` package.
+
+**Keypoints**
+
+- The GeoTIFF file format includes metadata about the raster data. 
+- To plot raster data with the `ggplot2` package, we need to convert it to a dataframe.
+- R stores CRS information in the Proj4 format.
+
+# Required packages
+
+We will continue to work with the `dplyr` and `ggplot2` packages that were introduced
+in the [Introduction to R for Geospatial Data](https://datacarpentry.org/r-intro-geospatial/) lesson. We will use two additional packages in this episode to work with raster data - the
+`raster` and `rgdal` packages. Make sure that you have these packages loaded.
+
+```{r load-libraries}
+library(raster)
+library(rgdal)
+library(ggplot2)
+library(dplyr)
+```
+
+# View Raster File Attributes
+
+We will be working with a series of GeoTIFF files in this lesson. The
+GeoTIFF format contains a set of embedded tags with metadata about the raster
+data. We can use the function `GDALinfo()` to get information about our raster
+data before we read that data into R. It is ideal to do this before importing
+your data.
+
+```{r view-attributes-gdal}
+
+# read raster information from file
+GDALinfo("data/raster/HARV_dsmCrop.tif")
+```
+
+Some key information to note about this file is the:
+
+* number of rows and columns
+* number of bands
+* resolution
+* projection
+
+# Open a Raster in R
+
+Now that we've previewed the metadata for our GeoTIFF, let's import this
+raster dataset into R and explore its metadata more closely. We can use the `raster()` 
+function to open a raster in R.
+
+First we will load our raster file into R and view the data structure.
+
+```{r load-dsm}
+
+# load raster into environment
+dsm <- raster("data/raster/HARV_dsmCrop.tif")
+
+# view raster information
+dsm
+
+# summary of values
+summary(dsm)
+
+# number of layers
+nlayers(dsm)
+
+# min and max values
+maxValue(dsm)
+minValue(dsm)
+```
+
+
+# Plot a Raster in R
+### Convert to data frame
+To visualise this data in R using `ggplot2`, we need to convert it to a
+dataframe. The `raster` package has an built-in function for conversion to a plotable dataframe. Now when we view the structure of our data, we will see a standard
+dataframe format.
+
+```{r dataframe}
+
+# convert raster to data frame for plotting
+dsm_df <- as.data.frame(dsm, xy = TRUE)
+
+# view the structure of the raster data frame
+str(dsm_df)
+```
+
+Note the column names of the data frame. There are two columns that specify the x and y coordinates and one column with the pixel values, with a column name that matches the name of the GeoTiff file. Knowing this column name is important because we will specify it in the `ggplot()` code.
+
+### Use ggplot for plotting
+
+We can use `ggplot()` to plot this data. We will set the color scale to `scale_fill_viridis_c`,
+which is a color-blindness friendly color scale. We will also use the `coord_quickmap()` function to use an approximate Mercator projection for our plots. This approximation is suitable for small areas that are not too close to the poles. Other coordinate systems are available in ggplot2 if needed, you can learn about them at their help page `?coord_map`.
+
+```{r ggplot-raster}
+
+# plot raster using ggplot
+# viridis colorscale and mercator projection
+ggplot() +
+    geom_raster(data = dsm_df , aes(x = x, y = y, fill = HARV_dsmCrop)) +
+    scale_fill_viridis_c() +
+    coord_quickmap()
+```
+
+**Plotting Tip!**
+
+For faster, simpler plots, you can use the `plot` function from the `raster` package.
+See `?plot` for more arguments to customize the plot
+```{r base-plot}
+
+# use base R to plot raster
+plot(dsm)
+```
+
+This map shows the elevation of our study site in Harvard Forest. From the
+legend, we can see that the maximum elevation is ~400, but we can't tell whether
+this is 400 feet or 400 meters because the legend doesn't show us the units. We
+can look at the metadata of our object to see what the units are. Much of the
+metadata that we're interested in is part of the CRS. We introduced the
+concept of a CRS in [an earlier
+lesson](https://datacarpentry.org/organization-geospatial/03-crs).
+
+Now we will see how features of the CRS appear in our data file and what
+meanings they have.
+
+# View Raster Coordinate Reference System (CRS)
+We can view the CRS string associated with our R object using the`crs()`
+function.
+
+```{r view-resolution-units}
+
+# view raster crs
+crs(dsm)
+```
+
+The CRS for our data is given to us by R in `proj4` format. Let's break down
+the pieces of `proj4` string. The string contains all of the individual CRS
+elements that R or another GIS might need. Each element is specified with a
+`+` sign, similar to how a `.csv` file is delimited or broken up by a `,`. After
+each `+` we see the CRS element being defined. For example projection (`proj=`)
+and datum (`datum=`).
+
+Our projection string for `dsm` specifies the UTM projection as follows:
+
+`+proj=utm +zone=18 +datum=WGS84 +units=m +no_defs`
+
+* **proj=utm:** the projection is UTM, UTM has several zones.
+* **zone=18:** the zone is 18
+* **datum=WGS84:** the datum is WGS84 (the datum refers to the  0,0 reference for
+the coordinate system used in the projection)
+* **units=m:** the units for the coordinates are in meters
+
+# Create A Histogram of Raster Values
+
+We can explore the distribution of values contained within our raster using the
+`geom_histogram()` function which produces a histogram. Histograms are often
+useful in identifying outliers and bad data values in our raster data.
+
+```{r view-raster-histogram}
+
+# plot histogram of dsm df
+ggplot() +
+    geom_histogram(data = dsm_df, aes(HARV_dsmCrop))
+```
+
+The material has been adapted from The Carpentries [Introduction to Geospatial Raster and Vector Data with R](https://datacarpentry.org/r-raster-vector-geospatial/01-raster-structure/index.html) lesson licensed under [CC-BY 4.0](https://creativecommons.org/licenses/by/4.0/)
