@@ -1,14 +1,24 @@
 name: "ESA2022"
-output_dir: "docs"
+output_dir: "src"
 navbar:
   title: "Workshop"
   left:
     - text: "Home"
       href: index.md
-    - text: "Morning"
-      href: morning.html
+    - text: "Morning_1"
+      href: episode1.html
+    - text: "Morning_2"
+      href: episode2.html
+    - text: "Morning_3"
+      href: episode3.html
+    - text: "Morning_4"
+      href: episode4.html
+    - text: "Morning_5"
+      href: episode5.html
+    - text: "Morning_6"
+      href: episode6.html
     - text: "Afternoon"
-      href: afternoon.html
+      href: episode9.html
 output:
   html_document:
     theme: jekyll-theme-midnight
