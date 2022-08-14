@@ -20,22 +20,39 @@
    </body>
 </html>
 
+
 ## Welcome to the Workshop material
 
-You can use the [editor on GitHub](https://github.com/weecology/ESA_workshop_2022/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Thank you for registering for the Short Course “Introduction to Geospatial Data Analysis in R and Application to Remote Sensing Based Tree Inventories from Neon Sites”! The short course is on Sunday August 14th from 9 am - 4 pm EDT.
+
+
+We are contacting you prior to the course with some pre-work to complete: 1) how to set up your computer with the proper data and tools and; 2) a survey to inform us of your pre-existing knowledge. The pre-work should take approximately 20 minutes to complete. We will provide time during the short course, but encourage everyone to work through the set up information in case there are any bugs or installation issues that may require extra time.
 
 
 
 
+1. Computer setup
+
+This workshop is designed to be run on your own computer. You will need to: 
+
+download the data
+
+set up your computer by installing the software needed to analyze and process geospatial data
+
+
+PLEASE FOLLOW THESE SET UP INSTRUCTIONS: https://uw-madison-datascience.github.io/geospatial-workshop/setup.html 
+
+
+You can also view the following videos that guide you through the setup:
+
+macOS: https://www.youtube.com/watch?v=nlMQ4NHAocQ&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=1 
+
+Windows 10: https://www.youtube.com/watch?v=iC8tuWZpEqo&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=2 
+
+
+Optional: Intro to R - a refresher in R programming
+
+This short course is designed for those who have some experience in R. If you need a refresher in R programming, we recommend you review some of the commands and functions that will be used in this short course. You may follow along with the written lesson “Introduction to R for Geospatial Data” here: https://datacarpentry.org/r-intro-geospatial/ and/or watch a series of recorded videos here that follow the same lesson material: https://www.youtube.com/watch?v=Dm6rKGtGaS8&list=PL90vX4e9ORqdzLc9hiER6eS3p0_KVLJw1 
 
 
 
-
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/weecology/ESA_workshop_2022/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
