@@ -9,7 +9,7 @@
    <body>
       <nav id="topnav">
          <a id="logo" class="nav-link" href="#">ESA2022</a>
-         <a class="nav-link" href="#">https://weecology.github.io/ESA_workshop_2022/afternoon.html</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/afternoon.html">Module 1</a>
          <a class="nav-link" href="#">Link 2</a>
          <a class="nav-link" href="#">Link 3</a>
          <a class="nav-link" href="#">Link 4</a>
