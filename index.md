@@ -9,13 +9,16 @@
    <body>
       <nav id="topnav">
          <a id="logo" class="nav-link" href="#">ESA2022</a>
-         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/afternoon.html">Module 1</a>
-         <a class="nav-link" href="#">Link 2</a>
-         <a class="nav-link" href="#">Link 3</a>
-         <a class="nav-link" href="#">Link 4</a>
-         <a class="nav-link" href="#">Link 5</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode1.html">Module 1</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode2.html">Module 2</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode3.html">Module 3</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode4.html">Module 4</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode5.html">Module 5</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode6.html">Module 6</a>
+         <a class="nav-link" href="https://weecology.github.io/ESA_workshop_2022/src/episode9.html">Module 9</a>
 
-         <a id="about" class="nav-link" href="#">About Me</a>
+
+         <a id="about" class="nav-link" href="https://idtrees.org/">About Us</a>
       </nav>
    </body>
 </html>
