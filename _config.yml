@@ -1,5 +1,4 @@
 name: "ESA2022"
-output_dir: "src"
 navbar:
   title: "Workshop"
   left:
@@ -19,9 +18,20 @@ navbar:
       href: episode6.html
     - text: "Afternoon"
       href: episode9.html
-output:
-  html_document:
-    theme: jekyll-theme-midnight
 
 
-theme: jekyll-theme-slate
+
+
+# Site
+title: ESA Workshop 2022
+author: Sarah J Graves & Sergio Marconi
+
+# Linked
+freecodecamp: 
+github: 
+
+# Preference
+markdown: kramdown
+theme: minima
+plugins:
+  - jekyll-feed
