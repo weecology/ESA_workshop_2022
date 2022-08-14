@@ -1,25 +1,4 @@
 name: "ESA2022"
-navbar:
-  title: "Workshop"
-  left:
-    - text: "Home"
-      href: index.md
-    - text: "Morning_1"
-      href: episode1.html
-    - text: "Morning_2"
-      href: episode2.html
-    - text: "Morning_3"
-      href: episode3.html
-    - text: "Morning_4"
-      href: episode4.html
-    - text: "Morning_5"
-      href: episode5.html
-    - text: "Morning_6"
-      href: episode6.html
-    - text: "Afternoon"
-      href: episode9.html
-
-
 
 
 # Site
