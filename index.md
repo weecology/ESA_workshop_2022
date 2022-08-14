@@ -41,19 +41,19 @@ download the data
 set up your computer by installing the software needed to analyze and process geospatial data
 
 
-PLEASE FOLLOW THESE SET UP INSTRUCTIONS: https://uw-madison-datascience.github.io/geospatial-workshop/setup.html 
+PLEASE FOLLOW THESE SET UP INSTRUCTIONS: <a href="https://uw-madison-datascience.github.io/geospatial-workshop/setup.html">Setup</a> 
 
 
 You can also view the following videos that guide you through the setup:
 
-macOS: https://www.youtube.com/watch?v=nlMQ4NHAocQ&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=1 
+<a href="https://www.youtube.com/watch?v=nlMQ4NHAocQ&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=1">MacOS</a>  
 
-Windows 10: https://www.youtube.com/watch?v=iC8tuWZpEqo&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=2 
+<a href="https://www.youtube.com/watch?v=iC8tuWZpEqo&list=PL90vX4e9ORqfzAY5IngLRM8OeyBS2ZYU6&index=2">Windows10</a>  
 
 
 Optional: Intro to R - a refresher in R programming
 
-This short course is designed for those who have some experience in R. If you need a refresher in R programming, we recommend you review some of the commands and functions that will be used in this short course. You may follow along with the written lesson “Introduction to R for Geospatial Data” here: https://datacarpentry.org/r-intro-geospatial/ and/or watch a series of recorded videos here that follow the same lesson material: https://www.youtube.com/watch?v=Dm6rKGtGaS8&list=PL90vX4e9ORqdzLc9hiER6eS3p0_KVLJw1 
+This short course is designed for those who have some experience in R. If you need a refresher in R programming, we recommend you review some of the commands and functions that will be used in this short course. You may follow along with the written lesson “Introduction to R for Geospatial Data” <a href="https://datacarpentry.org/r-intro-geospatial/">here</a> and/or watch a series of <a href="https://www.youtube.com/watch?v=Dm6rKGtGaS8&list=PL90vX4e9ORqdzLc9hiER6eS3p0_KVLJw1">ecorded videos here that follow the same lesson material</a> 
 
 
 
